@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax</title>
+</head>
+<body>
+
+    <p>Hello 1906</p>
+
+    <button id="btn1">获取用户信息</button>
+
+    <p id="info"></p>
+    <script>
+
+        // 获取节点
+        var btn1 = document.getElementById('btn1');
+
+        // 绑定事件
+        btn1.addEventListener('click',function (e) {
+
+            var httpRequest = new XMLHttpRequest();
+            console.log(httpRequest);
+
+            // 处理服务器响应
+            httpRequest.onreadystatechange = function(){
+
+                // Process the server response here.
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                    // Everything is good, the response was received.
+
+                    if (httpRequest.status === 200) {
+                        // 处理响应数据 JSON或XML 文本
+                        var data_str = httpRequest.responseText;        //服务器响应的数据
+                        console.log(data_str);
+
+                        //将文本转换为 js 对象
+                        var data_obj = JSON.parse(data_str);
+                        console.log(data_obj);
+                        console.log("用户名：" + data_obj.data.user_name);
+
+                        var user_name = data_obj.data.user_name;
+                        //将数据添加至 HTML页面中  （通过创建节点）
+                        document.getElementById("info").innerText = user_name;
+                    } else {
+                        // There was a problem with the request.
+                        // For example, the response may have a 404 (Not Found)
+                        // or 500 (Internal Server Error) response code.
+                    }
+
+                } else {
+                    // Not ready yet.
+                }
+            };
+
+            httpRequest.open('GET', '/ajax/api.php', true);
+            httpRequest.send();
+        })
+
+
+
+    </script>
+</body>
+</html>
