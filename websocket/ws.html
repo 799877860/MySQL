@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket</title>
+</head>
+<body>
+
+<h1>Websocket</h1>
+
+<input type="text" id="msg"> <button id="btn1">发送</button>
+
+<script>
+    // Create WebSocket connection.建立websocket连接
+    const socket = new WebSocket('ws://192.168.11.155:9501');
+
+    // Connection opened. 连接已建立
+    socket.addEventListener('open', function (event) {
+        socket.send('knock knock');
+
+        // 向服务器发送数据
+        document.getElementById('btn1').addEventListener('click',function () {
+            // 获取聊天信息
+            var msg = document.getElementById('msg').value;
+            socket.send(msg);
+            console.log(msg);
+        })
+    });
+
+    // 监听服务器消息
+    socket.addEventListener('message', function (event) {
+        console.log('信息来自服务器 ', event.data);
+    });
+</script>
+</body>
+</html>
